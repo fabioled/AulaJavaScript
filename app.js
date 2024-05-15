@@ -4,9 +4,17 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
     const listaJogos = document.getElementById('listaJogos');
     const jogo = cadastraJogo.value; 
 
-    if (jogo.trim() !== " ") {
+    if (jogo.trim() !== "") {
         const li = document.createElement('li');
-        li.textContent = jogo;
+        const textNode = document.createTextNode(jogo);
+        //li.textContent = jogo;
+        li.appendChild(textNode);
+
+        //Adicionando botão de editar
+        const btnEditarJogo = document.createElement('button');
+        btnEditarJogo.textContent = 'Alterar';
+        btnEditarJogo.className = 'edit-btn';
+        btnEditarJogo.onclick = function() { alteraJogo(li, textNode); };
 
         //Adicionado botão deletar
         const btnDelJogo = document.createElement('button');
@@ -14,6 +22,7 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
         btnDelJogo.className = 'delete-btn';
         btnDelJogo.onclick = function() { deletaJogos(this.parentNode); };
 
+        li.appendChild(btnEditarJogo);
         li.appendChild(btnDelJogo);
 
         listaJogos.appendChild(li);
@@ -29,7 +38,14 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
 
         jogos.forEach(jogos => {
             const li = document.createElement('li');
-            li.textContent = jogos;
+            const textNode = document.createElement(jogo);
+            li.appendChild(textNode);
+
+            //adicionando botão editar
+            const btnEditarJogo = document.createElement('button');
+            btnEditarJogo.textContent = 'Alterar';
+            btnEditarJogo.className = 'edit-btn';
+            btnEditarJogo.onclick = function() { alteraJogo(li, textNode); };
 
             //adicionando botão deletar
             const btnDelJogo = document.createElement('button');
@@ -37,9 +53,28 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
             btnDelJogo.className = 'delete-btn';
             btnDelJogo.onclick = function() { deletaJogos(this.parentNode); };
 
+            li.appendChild(btnEditarJogo);
             li.appendChild(btnDelJogo);
             listaJogos.appendChild(li);
         });
+    }
+
+    function alteraJogo(li, textNode){
+        const input = document.createElement('input');
+        input.type='text';
+        input.value = textNode.textContent;
+        li.insertBefore(input, textNode);
+        li.removeChild(textNode);
+
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                textNode.textContent = input.value;
+                li.insertBefore(textNode, input);
+                li.removeChild(input);                
+                salvaJogos(); //salvar no local storage as alterações
+            }
+        })
+
     }
 
     function salvaJogos(){
@@ -60,5 +95,7 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
         //atualiza localStorage
         salvaJogos();
     }
+
+    window.onload = carregarJogos;
 
 });
