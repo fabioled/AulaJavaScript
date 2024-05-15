@@ -7,6 +7,15 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
     if (jogo.trim() !== " ") {
         const li = document.createElement('li');
         li.textContent = jogo;
+
+        //Adicionado botão deletar
+        const btnDelJogo = document.createElement('button');
+        btnDelJogo.textContent = 'Deletar';
+        btnDelJogo.className = 'delete-btn';
+        btnDelJogo.onclick = function() { deletaJogos(this.parentNode); };
+
+        li.appendChild(btnDelJogo);
+
         listaJogos.appendChild(li);
         //salvar no localstorage
         salvaJogos();
@@ -21,6 +30,14 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
         jogos.forEach(jogos => {
             const li = document.createElement('li');
             li.textContent = jogos;
+
+            //adicionando botão deletar
+            const btnDelJogo = document.createElement('button');
+            btnDelJogo.textContent = 'Deletar';
+            btnDelJogo.className = 'delete-btn';
+            btnDelJogo.onclick = function() { deletaJogos(this.parentNode); };
+
+            li.appendChild(btnDelJogo);
             listaJogos.appendChild(li);
         });
     }
@@ -34,6 +51,14 @@ document.getElementById('btnAddJogo').addEventListener('click', function(){
         }
 
         localStorage.setItem('jogos', JSON.stringify(jogos));
+    }
+
+    function deletaJogos(jogoItem) {
+        //remover o item da lista
+        jogoItem.remove();
+
+        //atualiza localStorage
+        salvaJogos();
     }
 
 });

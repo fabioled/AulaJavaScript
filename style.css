@@ -51,3 +51,11 @@ li {
     background-color: #eee;
     border-radius: 4px;
 }
+
+.delete-btn {
+    margin-left: 10px;
+    color: red;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
